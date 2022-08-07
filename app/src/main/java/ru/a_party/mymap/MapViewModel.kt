@@ -22,7 +22,7 @@ class MapViewModel : ViewModel() {
         mMarkers.postValue(markerList)
     }
 
-    fun addMaker(point: Point, name:String){
+    fun addMarker(point: Point, name:String){
         markerList.add(MapMarker(point,name))
         mMarkers.postValue(markerList)
     }
