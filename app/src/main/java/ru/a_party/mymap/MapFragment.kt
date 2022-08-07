@@ -15,14 +15,13 @@ import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Bundle
 import android.text.InputType
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.view.Window
+import android.view.*
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.replace
 import androidx.lifecycle.ViewModelProvider
 import com.yandex.mapkit.Animation
 import com.yandex.mapkit.MapKitFactory
@@ -33,6 +32,7 @@ import com.yandex.mapkit.map.CameraPosition
 import com.yandex.mapkit.map.InputListener
 import com.yandex.mapkit.map.Map
 import com.yandex.runtime.image.ImageProvider
+import ru.a_party.App
 import ru.a_party.mymap.databinding.FragmentMapBinding
 
 const val LOCATION_PERMISSION_REQUEST_CODE = 159753
@@ -101,8 +101,14 @@ class MapFragment : Fragment(), LocationListener {
         savedInstanceState: Bundle?
     ): View? {
         requestLocationPermissions()
-        MapKitFactory.setApiKey(BuildConfig.API_KEY)
-        MapKitFactory.initialize(context)
+
+        if (App.mapInit==false)
+            {
+                MapKitFactory.setApiKey(BuildConfig.API_KEY)
+                MapKitFactory.initialize(context)
+                App.mapInit = true
+            }
+
         _binding = FragmentMapBinding.inflate(inflater, container, false)
 
         return binding.root
@@ -110,19 +116,17 @@ class MapFragment : Fragment(), LocationListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(this).get(MapViewModel::class.java)
+        viewModel = ViewModelProvider(this)[MapViewModel::class.java]
 
-        viewModel.initMarkers()
+
+
         getLocation()
 
         viewModel.myLocation.observe(viewLifecycleOwner) { point ->
             val camPos = CameraPosition(point, 14f, 0f, 0f)
-            binding.mapview.getMap().move(camPos, Animation(Animation.Type.SMOOTH, 5f), null)
+            binding.mapview.map.move(camPos)
         }
 
-        binding.mapview.setOnClickListener {
-            TODO("ХРЕН ТЕБЕ ЗОЛОТАЯ РЫБКА")
-        }
 
         viewModel.markers.observe(viewLifecycleOwner) { markers ->
             val mapObjects = binding.mapview.map.mapObjects

@@ -5,9 +5,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.yandex.mapkit.geometry.Point
+import org.koin.java.KoinJavaComponent
+import org.koin.java.KoinJavaComponent.inject
 
-class MapViewModel : ViewModel() {
-    private var markerList:ArrayList<MapMarker> = ArrayList<MapMarker>()
+class MapViewModel() : ViewModel() {
+
+    val myMarkers:MyMarkers = KoinJavaComponent.getKoin().get()
+
     private var mMarkers:MutableLiveData<List<MapMarker>> = MutableLiveData()
     var markers:LiveData<List<MapMarker>> = mMarkers
 
@@ -18,18 +22,12 @@ class MapViewModel : ViewModel() {
     fun setLocation(location: Location) {
         val myLocation = Point(location.latitude, location.longitude)
         mMyLocation.postValue(myLocation)
-        markerList[0].point = myLocation
-        mMarkers.postValue(markerList)
+        myMarkers.set(MapMarker(myLocation,"My pos"),0)
+        mMarkers.postValue(myMarkers.get())
     }
 
     fun addMarker(point: Point, name:String){
-        markerList.add(MapMarker(point,name))
-        mMarkers.postValue(markerList)
+        myMarkers.add(MapMarker(point,name))
+        mMarkers.postValue(myMarkers.get())
     }
-
-    fun initMarkers(){
-        markerList.clear()
-        markerList.add(MapMarker(Point(0.00,0.00),"my pos"))
-    }
-
 }

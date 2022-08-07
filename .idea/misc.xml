@@ -3,8 +3,12 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/AndroidProject/MyMap/app/src/main/res/layout/activity_main.xml" value="0.33" />
+        <entry key="..\:/AndroidProject/MyMap/app/src/main/res/layout/activity_main.xml" value="0.22" />
+        <entry key="..\:/AndroidProject/MyMap/app/src/main/res/layout/fragment_list_marker.xml" value="0.33177083333333335" />
         <entry key="..\:/AndroidProject/MyMap/app/src/main/res/layout/fragment_map.xml" value="0.16" />
+        <entry key="..\:/AndroidProject/MyMap/app/src/main/res/layout/point_holder.xml" value="0.5" />
+        <entry key="..\:/AndroidProject/MyMap/app/src/main/res/menu/bottom_menu.xml" value="0.20572916666666666" />
+        <entry key="..\:/AndroidProject/MyMap/app/src/main/res/menu/main_menu.xml" value="0.18177083333333333" />
       </map>
     </option>
   </component>
